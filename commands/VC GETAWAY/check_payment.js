@@ -20,7 +20,7 @@ CMD*/
 // VC PAYMENT - CHECK (FINAL FIX)
 // ===============================
 
-var API_KEY = "PAY91646C96F5A3C5427A811042";
+var API_KEY = Bot.getProperty("VC_API_KEY") || "PAY91646C96F5A3C5427A811042";
 
 var orderId = User.getProperty("txn_id");
 var amount = User.getProperty("pay_amount");

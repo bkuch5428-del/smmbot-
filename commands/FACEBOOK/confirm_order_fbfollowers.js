@@ -17,7 +17,7 @@
 CMD*/
 
 // CALLBACK: confirm_order
-if (request.data == "confirm_order_fbviews") {
+if (request.data == "confirm_order_fbfollowers") {
 
   /* ===============================
      1️⃣ API SETTINGS

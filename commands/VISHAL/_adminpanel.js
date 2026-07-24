@@ -17,10 +17,10 @@
 CMD*/
 
 // Command: /adminpanel
-let ADMIN_ID = 6390284418;
+let ADMIN_ID = Bot.getProperty("ADMIN_ID");
 
 // 1️⃣ Check if user is admin
-if (chat.chatid != ADMIN_ID) {
+if (!ADMIN_ID || String(chat.chatid) != String(ADMIN_ID)) {
   return Api.sendMessage({
     chat_id: chat.chatid,
     text: "❌ You are not admin"

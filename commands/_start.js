@@ -122,10 +122,10 @@ if (!userExists) {
   Bot.setProperty("userlist", userList, "json")
 }
 
-// ===== API URL =====
-var fixedApiUrl = "https://vcprovider.shop/api/v2";
-
-Bot.setProperty("API_URL", fixedApiUrl, "string");
+// ===== API URL (set default only on first run, so admin overrides via /setapiurl are preserved) =====
+if (!Bot.getProperty("API_URL")) {
+  Bot.setProperty("API_URL", "https://vcprovider.shop/api/v2", "string");
+}
 
 // ===== BROADCAST LIST =====
 var broadcastUsers = Bot.getProperty("broadcast_list", [])

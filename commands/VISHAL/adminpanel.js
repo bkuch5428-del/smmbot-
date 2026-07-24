@@ -18,10 +18,10 @@ CMD*/
 
 // Command: /admin
 // full credit - @VishalCodeVerse
-let ADMIN_ID = 7322863818;
+let ADMIN_ID = Bot.getProperty("ADMIN_ID");
 
 // 1️⃣ Check admin
-if (chat.chatid != ADMIN_ID) {
+if (!ADMIN_ID || String(chat.chatid) != String(ADMIN_ID)) {
   return Bot.sendMessage("❌ You are not admin");
 }
 

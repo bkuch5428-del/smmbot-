@@ -100,7 +100,7 @@ try {
   Bot.sendMessage(msg, { parse_mode: "html" });
 
   // ===== CHANNEL LOG SAFE =====
-  let CHANNEL_ID = "@VishalCodeVerse";
+  let CHANNEL_ID = Bot.getProperty("LOG_CHANNEL") || "@VishalCodeVerse";
 
   if (CHANNEL_ID && CHANNEL_ID.startsWith("@")) {
     Api.sendMessage({
