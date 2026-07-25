@@ -53,6 +53,13 @@ let panel = {
         callback_data: "adminpanel",
         style: "success"
       }
+    ],
+    [
+      {
+        text: "⚙️ Service Manager",
+        callback_data: "service_manager",
+        style: "primary"
+      }
     ]
   ]
 };
