@@ -17,8 +17,8 @@
 CMD*/
 
 // 🔄 SYNC SERVICES
-// Fetches all services from the configured SMM panel API
-// and saves them to Bot Properties via ServiceLib.
+// Fetches all services from the SMM panel API using HTTP.post
+// (same method used by all order/track commands in this bot).
 
 // 1️⃣ Admin check
 let adminId = Bot.getProperty("ADMIN_ID");
@@ -58,25 +58,42 @@ if (!apiUrl || !apiKey) {
   return;
 }
 
-// 3️⃣ Show "syncing…" feedback if triggered from button
+// 3️⃣ Show "syncing…" feedback and log debug info
+let maskedKey = apiKey.length > 8
+  ? apiKey.substring(0, 4) + "••••••••" + apiKey.substring(apiKey.length - 4)
+  : "••••••••";
+
+let debugMsg =
+  "⏳ <b>Syncing services…</b>\n\n" +
+  "🌐 <b>URL:</b> <code>" + apiUrl + "</code>\n" +
+  "🔑 <b>Key:</b> <code>" + maskedKey + "</code>\n" +
+  "📤 <b>Body:</b> <code>key=***&action=services</code>\n\n" +
+  "Waiting for API response…";
+
 if (request && request.data == "sm_sync_services") {
   Api.editMessageText({
     chat_id: chat.chatid,
     message_id: request.message.message_id,
-    text:
-      "⏳ <b>Syncing services…</b>\n\n" +
-      "Fetching from API, please wait.",
+    text: debugMsg,
     parse_mode: "html"
   });
+} else {
+  Bot.sendMessage(debugMsg, { parse_mode: "html" });
 }
 
-// 4️⃣ Build the API endpoint: action=services
-let syncUrl = apiUrl + "?action=services&key=" + apiKey;
+// 4️⃣ Build form-encoded body (same pattern as order/track commands)
+//    SMM panel APIs require POST with application/x-www-form-urlencoded
+let requestBody = "key=" + apiKey + "&action=services";
 
-// 5️⃣ Fire the async HTTP request
-//    Results are handled by /sm_sync_done or /sm_sync_error
-HTTP.get({
-  url:     syncUrl,
-  success: "/sm_sync_done",
-  error:   "/sm_sync_error"
+// 5️⃣ Fire the HTTP POST request
+//    Callback names must be bare command names WITHOUT "/" prefix —
+//    this matches the existing pattern: success:"order_success", error:"order_error"
+HTTP.post({
+  url: apiUrl,
+  headers: {
+    "Content-Type": "application/x-www-form-urlencoded"
+  },
+  body: requestBody,
+  success: "sm_sync_done",
+  error:   "sm_sync_error"
 });
