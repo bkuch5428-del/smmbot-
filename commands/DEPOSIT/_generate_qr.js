@@ -27,7 +27,15 @@ var amount = User.getProperty("pay_amount");
 User.setProperty("txn_id", txnid, "string");
 
 // UPI pay — reads UPI ID set by admin via /setupi
-var upiId = Bot.getProperty("UPI_ID") || "paytm.s1dw5n0@pty";
+var upiId = Bot.getProperty("UPI_ID");
+if (!upiId) {
+  Bot.sendMessage(
+    "❌ <b>UPI ID Not Configured</b>\n\n" +
+    "Payment cannot proceed. Admin must run /setupi to set the UPI ID.",
+    { parse_mode: "html" }
+  );
+  return;
+}
 var upi =
   "upi://pay?pa=" + upiId +
   "&pn=VC Payment Gateway" +

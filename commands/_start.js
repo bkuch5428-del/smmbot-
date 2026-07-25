@@ -122,9 +122,22 @@ if (!userExists) {
   Bot.setProperty("userlist", userList, "json")
 }
 
-// ===== API URL (set default only on first run, so admin overrides via /setapiurl are preserved) =====
+// ===== API URL CHECK =====
+// Never write API_URL here — admin must set it via /setapiurl.
+// If it is missing, alert the admin so they know to configure it.
 if (!Bot.getProperty("API_URL")) {
-  Bot.setProperty("API_URL", "https://vcprovider.shop/api/v2", "string");
+  var _warnAdminId = Bot.getProperty("ADMIN_ID");
+  if (_warnAdminId) {
+    Api.sendMessage({
+      chat_id: _warnAdminId,
+      text:
+        "⚠️ <b>Admin Warning</b>\n\n" +
+        "API_URL is not configured.\n" +
+        "Please run /setapiurl to set the SMM panel API URL.\n\n" +
+        "Example: <code>/setapiurl https://vcprovider.shop/api/v2</code>",
+      parse_mode: "html"
+    });
+  }
 }
 
 // ===== BROADCAST LIST =====

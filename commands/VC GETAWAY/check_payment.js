@@ -20,7 +20,15 @@ CMD*/
 // VC PAYMENT - CHECK (FINAL FIX)
 // ===============================
 
-var API_KEY = Bot.getProperty("VC_API_KEY") || "PAY91646C96F5A3C5427A811042";
+var API_KEY = Bot.getProperty("VC_API_KEY");
+if (!API_KEY) {
+  Bot.sendMessage(
+    "❌ <b>Payment API Key Not Configured</b>\n\n" +
+    "Admin must set the VC_API_KEY bot property in the Bots.Business dashboard.",
+    { parse_mode: "html" }
+  );
+  return;
+}
 
 var orderId = User.getProperty("txn_id");
 var amount = User.getProperty("pay_amount");

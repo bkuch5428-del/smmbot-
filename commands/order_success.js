@@ -99,10 +99,12 @@ try {
   // send to user
   Bot.sendMessage(msg, { parse_mode: "html" });
 
-  // ===== CHANNEL LOG SAFE =====
-  let CHANNEL_ID = Bot.getProperty("LOG_CHANNEL") || "@VishalCodeVerse";
+  // ===== CHANNEL LOG =====
+  // Only log if admin has configured a LOG_CHANNEL bot property.
+  // If not set, silently skip — no fallback channel.
+  let CHANNEL_ID = Bot.getProperty("LOG_CHANNEL");
 
-  if (CHANNEL_ID && CHANNEL_ID.startsWith("@")) {
+  if (CHANNEL_ID) {
     Api.sendMessage({
       chat_id: CHANNEL_ID,
       text: msg,

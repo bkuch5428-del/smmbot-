@@ -18,19 +18,15 @@ CMD*/
 
 // COMMAND: /setadminid
 
-// ⚠️ Yahan apna ID likhein (Backup ke liye)
-const MY_OWNER_ID = 6390284418; 
-
 // --- SECURITY CHECK ---
 let currentAdmin = Bot.getProperty("ADMIN_ID");
 let user_id = String(user.telegramid);
 
-// Agar Admin ID pehle se set hai, to check karein ki aap Admin ya Owner hain
-if (currentAdmin) {
-  if (user_id != String(currentAdmin) && user_id != String(MY_OWNER_ID)) {
-    Bot.sendMessage("❌ Aapko permission nahi hai.");
-    return;
-  }
+// Agar Admin ID pehle se set hai, to sirf current admin hi badal sakta hai.
+// Agar set nahi hai, koi bhi pehli baar set kar sakta hai (bootstrap).
+if (currentAdmin && user_id != String(currentAdmin)) {
+  Bot.sendMessage("❌ Aapko permission nahi hai.");
+  return;
 }
 
 // --- INPUT LENAY KA NAYA TARIKA ---

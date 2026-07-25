@@ -19,8 +19,20 @@ CMD*/
 // Command: /adminpanel
 let ADMIN_ID = Bot.getProperty("ADMIN_ID");
 
-// 1️⃣ Check if user is admin
-if (!ADMIN_ID || String(chat.chatid) != String(ADMIN_ID)) {
+// 1️⃣ Check if ADMIN_ID has been configured yet
+if (!ADMIN_ID) {
+  return Api.sendMessage({
+    chat_id: chat.chatid,
+    text:
+      "⚠️ <b>Admin Not Configured</b>\n\n" +
+      "No admin ID is set yet.\n" +
+      "Run <code>/setadminid YOUR_TELEGRAM_ID</code> to set up admin access.",
+    parse_mode: "html"
+  });
+}
+
+// 2️⃣ Check if caller is the admin
+if (String(chat.chatid) != String(ADMIN_ID)) {
   return Api.sendMessage({
     chat_id: chat.chatid,
     text: "❌ You are not admin"
