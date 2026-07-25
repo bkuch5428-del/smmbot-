@@ -17,16 +17,11 @@
 CMD*/
 
 // ❌ SYNC SERVICES — HTTP error callback
-// Triggered by HTTP.post error: "sm_sync_error" in sm_sync.js
-// options.data contains the raw error body (if any).
-
-let statusCode = options && options.status ? options.status : "unknown";
-let rawBody    = options && options.data   ? String(options.data)   : "(no body)";
+// BB passes the error body in `content` (same pattern as track_error.js / order_error.js)
 
 Bot.sendMessage(
   "❌ <b>Service Sync Failed</b>\n\n" +
-  "📊 <b>HTTP Status:</b> <code>" + statusCode + "</code>\n" +
-  "📄 <b>Raw response:</b>\n<code>" + rawBody.substring(0, 400) + "</code>\n\n" +
+  "📄 <b>Raw response:</b>\n<code>" + String(content).substring(0, 400) + "</code>\n\n" +
   "Common causes:\n" +
   "• Wrong API_URL — use <code>/setapiurl</code>\n" +
   "• Wrong API_KEY — use <code>/setapikey</code>\n" +
